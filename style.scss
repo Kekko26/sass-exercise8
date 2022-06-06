@@ -1,0 +1,114 @@
+@use 'variables' as c;
+@use 'px-to-rem' as f;
+
+@mixin square($color, $bordercolor, $fontsize: 1rem){
+    color: $color;
+    border: f.convertpx(1) solid $bordercolor;
+    font-size: $fontsize;
+    text-align: center;
+    padding: f.convertpx(10);
+}
+
+@mixin box($pixel){
+    width: f.convertpx($pixel);
+    height: f.convertpx($pixel);
+}
+
+%titles{
+    color: c.$greencolor;
+    margin-bottom: f.convertpx(2);
+    border-bottom: f.convertpx(1) solid c.$bluecolor;
+}
+
+
+body{
+    margin: f.convertpx(10);
+
+>div{
+    border: solid f.convertpx(1) c.$redcolor;
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+        h1{
+            @extend %titles;
+        }
+
+        h2{
+            @extend %titles;
+            padding: 1rem;
+            border: red f.convertpx(1) solid;
+        }
+
+        section{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            &:first-of-type{
+            width: 95%;
+            // margin: 0 20px;
+
+             article{
+
+                &:nth-child(odd){
+                    @include square(c.$bluecolor, c.$greencolor);
+
+                }
+                &:nth-child(even){
+                    @include square(c.$redcolor, c.$greencolor);
+
+                }
+                }
+             }
+        
+        &:nth-of-type(2){
+            width: 95%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            div{
+                @include box(45);
+                margin: 5px;
+                border: c.$redcolor solid f.convertpx(1);
+                margin: 0%;
+                /*Parte dedicata al font sizing*/
+                $remvar: 1rem,2rem,3rem;
+                @each $num in $remvar{
+                    &.fs-#{$num}{
+                       font-size: $num;
+                    }
+                }
+                
+                /*Parte dedicata al color*/
+                @for $i from 1 to 20{
+                    &:nth-child(#{$i}){
+                        background-color: darken($color: white, $amount: 5n*$i);
+                        color: lighten($color: black, $amount: 5n*$i);
+                    }
+                }
+
+                &:nth-of-type(10){
+                    background-color: c.$bluecolor;
+                    color: c.$redcolor;
+                }
+
+            }
+
+        }
+
+        &:last-of-type{
+            width: 95%;
+            article{
+                @include square(c.$greencolor,c.$bluecolor, f.convertpx(24));
+                width: 100%;
+                margin-bottom: f.convertpx(10);
+                }
+            }
+        }
+ }
+ }
